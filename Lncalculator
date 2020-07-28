@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+int main(void) {
+#define SIZE 1001
+#define SIZE2 1000
+char c, numar[SIZE], qar[SIZE], d[SIZE][SIZE], sign;
+long long int  ari[SIZE], dcnum=0, dcq=0, ch=0, a=0, b=0, e=0, j=0, x=0, nd=0;
+printf("Usage: 1st #, operation[+ - * \(or x\)], return, 2nd #, \'e\' to end equation.\n");
+printf("Does up to 1000 digit solutions. Does not take negative numbers as input. Enter \'z\' to quit.\n\n");
+	while (ch==0) {
+for (j=1; j<=SIZE2; j++) {ari[j]=0; numar[j]=0; qar[j]=0;}
+for (j=dcq; j>=1; j--) {for (b=dcnum; b>=1; b--) {d[b][j]=0;}}
+	for (dcnum=1; dcnum<=SIZE2 || c=='\n'; dcnum++) {c=getchar(); numar[dcnum]=c-'0';
+	if (c=='\n') {dcnum--;} if (c=='z') {printf("Exiting.\n\n"); exit(0);}
+	if ((c=='+' || c=='p' || c=='-' || c=='m' || c=='*' || c=='x') || dcnum>SIZE) { numar[dcnum]='\0'; sign=c; dcnum--; break;}}
+for (a=1, b=dcnum; a<=dcnum; a++, b--) {ari[a]=numar[b];}									//flip array
+for (a=1; a<=dcnum; a++) {numar[a]=ari[a];} for (j=1; j<=dcnum; j++) {ari[j]=0;}
+for (dcq=1; dcq<=SIZE2 || c=='\n'; dcq++) {c=getchar(); qar[dcq]=c-'0';
+	if (c=='\n') {dcq--;}
+	if ((c=='e' || c=='=') || dcq>SIZE) { qar[dcq]='\0'; dcq--;  break;}}
+for (a=1, b=dcq; a<=dcq; a++, b--) {ari[a]=qar[b];}									//flip array
+for (a=1; a<=dcq; a++) {qar[a]=ari[a];	} for (j=1; j<=dcq; j++) {ari[j]=0;}
+
+if (sign=='+'|| sign=='p') {
+printf ("\n= ");
+if (dcq>dcnum) {nd=dcq;} if (dcnum>dcq) {nd=dcnum;} if (dcnum==dcq) {nd=dcnum+1;}
+for (b=1; b<=nd; b++) {ari[b]=numar[b]+qar[b];}
+for (j=1; j<=nd; j++) {if (ari[j]>=10) {x=ari[j]; ari[j]=x%10; ari[j+1]=ari[j+1]+(x/10); if (x>0 && j>=nd) {nd++;}}}}
+
+if (sign=='-' || sign=='m') {
+printf("\n= ");
+e=0; if (dcnum>=dcq) {nd=dcnum+1; e=1;} if (dcq>=dcnum) {nd=dcq+1; e=0;}
+if (dcnum==dcq) {nd =dcnum+1; for (a=nd; a>=1; a--) {if (numar[a]>qar[a]) {e=1; break;} if (numar[a]<qar[a]) {e=0; break;}}}
+if (e==1) {printf("+"); for(j=1; j<=nd; j++) { ari[j]=numar[j]-qar[j];}}
+if (e==0) {printf("-"); nd++; for(j=1; j<=nd; j++) { ari[j]=qar[j]-numar[j];}}
+for(j=1; j<=nd; j++) {if (ari[j]<0) {x=ari[j]; ari[j]=ari[j]+10; ari[j+1]=ari[j+1]-1;}}}
+
+if (sign=='*' || sign=='x') {nd=(dcnum+dcq);
+printf ("\n= ");
+for (j=1; j<=dcq; j++) {for (b=1; b<=dcnum; b++) {ari[b]=0; d[b][j]=numar[b]*qar[j];}}
+e=0; for (a=1; a<=nd; a++) {e++; ari[a]=0;
+for (b=1, j=e; j>=1, b<=dcnum; b++, j--){ ari[a]=ari[a]+d[b][j];}}
+for (j=1; j<=nd; j++) {if (ari[j]>=10) {x=ari[j]; ari[j]=ari[j]%10; ari[j+1]=ari[j+1]+(x/10); }}}
+
+for (j=nd; j>=1; j--) {if (ari[j]==0) {nd--;} if (ari[j]!=0) {break;}}
+if (nd==0 && (sign=='-' || sign=='m')) {printf("%c0", 8);}
+if (nd==0 && (sign=='+' || sign=='p' || sign=='x' || sign=='*')) {printf("0");}
+for(j=nd; j>=1; j--) {printf("%d", ari[j]);}
+
+printf ("\n\n");}
+
+return (0);}
